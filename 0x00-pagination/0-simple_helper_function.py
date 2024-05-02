@@ -3,6 +3,7 @@
 Simple helper function
 """
 
+
 def index_range(page, page_size):
     """
     return a tuple of size two containing a start
@@ -10,4 +11,6 @@ def index_range(page, page_size):
     of indexes to return in a list for those particular
     pagination parameters
     """
-    return
+    start_index = page_size * (page - 1)
+    end_index = start_index + page_size
+    return (start_index, end_index)
