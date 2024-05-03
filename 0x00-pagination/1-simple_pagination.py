@@ -51,10 +51,11 @@ class Server:
             assert page != 0 and page_size != 0, "raised with 0"
             assert page > 0 and page_size > 0, "raised with negative values"
         except AssertionError as e:
-            print(f"AssertionError {e}")
+            raise AssertionError(e)
+
+        pagination_range = index_range(page, page_size)
+        if (pagination_range[0] >= len(self.dataset()) or
+                pagination_range[1] >= len(self.dataset())):
             return []
-        range = index_range(page, page_size)
-        if (range[0] >= len(self.dataset()) or
-                range[1] >= len(self.dataset())):
-            return []
-        return self.dataset()[range[0]: range[1]]
+
+        return self.dataset()[pagination_range[0]: pagination_range[1]]
