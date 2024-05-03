@@ -4,10 +4,10 @@ Simple helper function
 """
 import csv
 import math
-from typing import List
+from typing import List, Tuple
 
 
-def index_range(page, page_size):
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """
     return a tuple of size two containing a start
     index and an end index corresponding to the range
