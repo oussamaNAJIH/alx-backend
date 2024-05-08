@@ -24,33 +24,34 @@ class LFUCache(BaseCaching):
         if key not in self.cache_data:
             if len(self.cache_data) < BaseCaching.MAX_ITEMS:
                 self.cache_data[key] = item
-                self.items_frequency[key] = 1  # New item, set frequency to 1
+                self.items_frequency[key] = 1
             else:
                 min_frequency = min(self.items_frequency.values())
-                min_freq_keys = [k for k, v in self.items_frequency.items() if v == min_frequency]
+                min_freq_keys = []
+                for k, v in self.items_frequency.items():
+                    if v == min_frequency:
+                        min_freq_keys.append(k)
                 if len(min_freq_keys) == 1:
                     least_frequently_used_key = min_freq_keys[0]
                     print("DISCARD:", least_frequently_used_key)
                     del self.cache_data[least_frequently_used_key]
                     del self.items_frequency[least_frequently_used_key]
                 else:
-                    # If there are multiple keys with the same minimum frequency,
-                    # we choose the least recently used among them (using LRU)
                     least_frequently_used_key = min_freq_keys[0]
                     for k in min_freq_keys:
-                        if self.items_frequency[k] < self.items_frequency[least_frequently_used_key]:
+                        myList = self.items_frequency
+                        least_frequency = myList[least_frequently_used_key]
+                        if self.items_frequency[k] < least_frequency:
                             least_frequently_used_key = k
                     print("DISCARD:", least_frequently_used_key)
                     del self.cache_data[least_frequently_used_key]
                     del self.items_frequency[least_frequently_used_key]
-                
-                self.cache_data[key] = item
-                self.items_frequency[key] = 1  # New item, set frequency to 1
-        else:
-            # If key is already in cache, just update the item
-            self.cache_data[key] = item
-            self.items_frequency[key] += 1  # Increment frequency of existing item
 
+                self.cache_data[key] = item
+                self.items_frequency[key] = 1
+        else:
+            self.cache_data[key] = item
+            self.items_frequency[key] += 1
 
     def get(self, key):
         """ Get an item by key
