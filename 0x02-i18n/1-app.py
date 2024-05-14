@@ -13,6 +13,15 @@ app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC'
 babel = Babel(app)
 
 
+# Define available languages in a Config class
+class Config:
+    LANGUAGES = ["en", "fr"]
+
+
+# Use Config to set Babel's default locale and timezone
+app.config.from_object(Config)
+
+
 @app.route("/")
 def index():
     """
